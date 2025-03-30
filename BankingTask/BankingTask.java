@@ -32,6 +32,7 @@ public class BankingTask {
         System.out.println("|||| 4: DEPOSIT/WITHDRAW ||||");
 
         String choose = kb.nextLine().toUpperCase();
+         doesTheStuff.DefineFiles();
         switch (choose) {
             case "ONE":
             case "1":
@@ -56,6 +57,7 @@ public class BankingTask {
             default:
                 System.out.println("Input not identified. Please try again");
         }
+       
     }
 
     public void RunArt() {
