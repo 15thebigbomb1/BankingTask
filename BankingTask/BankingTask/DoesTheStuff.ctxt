@@ -1,0 +1,13 @@
+#BlueJ class context
+comment0.target=DoesTheStuff
+comment1.params=
+comment1.target=void\ DefineFiles()
+comment2.params=
+comment2.target=void\ CreateAccount()
+comment3.params=
+comment3.target=void\ CloseAccount()
+comment4.params=
+comment4.target=void\ CheckBalance()
+comment5.params=
+comment5.target=void\ DepositOrWithdrawl()
+numComments=6
