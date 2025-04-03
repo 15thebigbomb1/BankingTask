@@ -8,7 +8,11 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Scanner;
 import java.io.File;
+import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.IOException;
+import java.io.BufferedReader;
+
 public class DoesTheStuff
 {
     private String name;
@@ -29,6 +33,9 @@ public class DoesTheStuff
     private BankingTask bankingTask;
     // defining 2d arrays and loops for file checking, and also defing where the values will be
     // kept with the 2d array, "allLinesAllElements".
+    
+    String replaceValue;
+    String newValue;
     public DoesTheStuff(BankingTask bankingTask) { 
         this.bankingTask = bankingTask; // Assign BankingTask instance
     }
@@ -70,7 +77,55 @@ public class DoesTheStuff
     public void CloseAccount(){
         System.out.println("hello! 2");
     }
-
+    
+    public void ChangeVariable(){
+        String oldContent = "";
+        BufferedReader reader = null;
+         
+        FileWriter writer = null;
+         try
+        {
+            reader = new BufferedReader(new FileReader(userInfoList));
+             
+            //Reading all the lines of input text file into oldContent
+             
+            String line = reader.readLine();
+             
+            while (line != null) 
+            {
+                
+                oldContent = oldContent + line + System.lineSeparator();
+                 
+                line = reader.readLine();
+                System.out.println(line);
+            }
+             
+            //Replacing oldString with newString in the oldContent
+            System.out.println(replaceValue);
+            System.out.println(newValue);
+            String newContent = oldContent.replace(","+replaceValue, ","+newValue);
+             
+            //Rewriting the input text file with newContent
+             
+            writer = new FileWriter(userInfoList);
+             
+            writer.write(newContent);
+        }
+        catch (IOException e){}
+        try
+            {
+                //Closing the resources
+                 
+                reader.close();
+                 
+                writer.close();
+            } 
+            catch (IOException e) 
+            {
+                e.printStackTrace();
+            }
+    }
+    
     public void CheckBalance(){
         int b = 0;
         // int value for the while loop that chec
@@ -157,8 +212,10 @@ public class DoesTheStuff
 
                 System.out.print("Your "+allLinesAllElements[d][3]+" was at " +allLinesAllElements[d][4]);
                 //before the added values
-
+                replaceValue = Float.toString(depositWithdrawlNumber);
                 depositWithdrawlNumber = depositWithdrawlNumber + depositAmount;
+                newValue = Float.toString(depositWithdrawlNumber);
+                
                 // adds the amount the user has inputed
 
                 numberConverter = Float.toString(depositWithdrawlNumber);
@@ -184,10 +241,11 @@ public class DoesTheStuff
                     bankingTask.RunArt();
                     DepositOrWithdrawl();
                 }
-
+                
+                replaceValue = Float.toString(depositWithdrawlNumber);
                 depositWithdrawlNumber = depositWithdrawlNumber - withdrawlAmount;
                 // adds the amount the user has inputed
-
+                newValue = Float.toString(depositWithdrawlNumber);
                 numberConverter = Float.toString(depositWithdrawlNumber);
                 //converts the float back to the String
                 
@@ -209,11 +267,13 @@ public class DoesTheStuff
         System.out.println("working");
         //users input that chooses the choice
         if (menuChoiceFour.equals("YES") || menuChoiceFour.equals("Y") || menuChoiceFour.equals("YEP")){
-            CheckBalance();
+            DepositOrWithdrawl();
             //runs the method again
         } else if (menuChoiceFour.equals("NO") || menuChoiceFour.equals("N") || menuChoiceFour.equals("NAH")){
             System.out.println('\u000C');
+            ChangeVariable();
             bankingTask.Menu();
+            
             // closes the program and returns to menu
         }  else{ 
             System.out.println('\u000C');
