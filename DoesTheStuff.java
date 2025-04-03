@@ -2,7 +2,7 @@
  * Write a description of class DoesTheStuff here.
  *
  * @author (Gabriel Gibson)
- * @version (30/03/25)
+ * @version (3/04/25)
  */
 import java.util.ArrayList;
 import java.util.Collections;
@@ -32,6 +32,7 @@ public class DoesTheStuff
     public DoesTheStuff(BankingTask bankingTask) { 
         this.bankingTask = bankingTask; // Assign BankingTask instance
     }
+
     public void DefineFiles(){
         String CSVlines[] = new String[MAXLINES];
         ArrayList<String[]> tempList = new ArrayList<>();
@@ -58,7 +59,6 @@ public class DoesTheStuff
             allLinesAllElements = tempList.toArray(new String[tempList.size()][]);
             //defines the templists values and adds it to the 2d array, with the first
             // variable being the amount of rows, and the second being the info name, adress etc.
-
 
         } catch (IOException e) {System.out.println(e);}
     }
@@ -98,27 +98,34 @@ public class DoesTheStuff
         }
 
         System.out.println("Do you want to check/recheck your balance, Type yes to do so, otherwise type no to go back to the menu");
-        String balanceChoice= kb.nextLine().toUpperCase();
+        String menuChoiceThree= kb.nextLine().toUpperCase();
         //users input that chooses the choice
-        if (balanceChoice.equals("YES") || balanceChoice.equals("Y") || balanceChoice.equals("YEP")){
+        if (menuChoiceThree.equals("YES") || menuChoiceThree.equals("Y") || menuChoiceThree.equals("YEP")){
             CheckBalance();
             //runs the method again
-        } else if (balanceChoice.equals("NO") || balanceChoice.equals("N") || balanceChoice.equals("NAH")){
+        } else if (menuChoiceThree.equals("NO") || menuChoiceThree.equals("N") || menuChoiceThree.equals("NAH")){
             System.out.println('\u000C');
             bankingTask.Menu();
             // closes the program and returns to menu
+        } else{ 
+            System.out.println('\u000C');
+            System.out.println("Input not recognised, going back to the menu");
+            bankingTask.Menu();
         }
-
     }
 
     public void DepositOrWithdrawl(){
         int d = 0;
         // int value for the while loop that checks for the name 
         System.out.println("enter in your name of the account you want to use");
-
+        
         String depositname = kb.nextLine();
         boolean depositNameCheck = true;
+        //runs nameCheck loop
+        boolean allowDepositWithdrawl = false;
+        // runs the Deposit/Withdrawl loop
         float depositWithdrawlNumber = 0;
+        //defines the float value that will be used to remove/add amounts of money
         String numberConverter;
         // the name the user will input to find there account
         while (depositNameCheck == true){
@@ -126,46 +133,92 @@ public class DoesTheStuff
                 numberConverter = allLinesAllElements[d][4];
                 depositWithdrawlNumber = Float.valueOf(numberConverter);
                 depositNameCheck = false;
+                allowDepositWithdrawl = true;
+                // if the name is found a while loop is turned on that will allow the user to deposit/withdrawl
             } else{
                 d++;
                 if (d == allLinesAllElements.length){
                     System.out.println("Name not identifed");
                     depositNameCheck = false;
-                    
-                    
                     //turns off the loop if the name is not found
                 }
             }
         }
-        System.out.println("Type 1 to deposit and 2 to withdrawl");
-        String depositChoice = kb.nextLine().toUpperCase();
-        if (depositChoice.equals("1")|| depositChoice.equals("ONE")){
-            System.out.println("what amount do you want to deposit");
-            float depositAmount = kb.nextFloat();
-            //Amount the users wants to add
-            System.out.print("Your account was at " +allLinesAllElements[d][4]);
-            //before the added values
-            depositWithdrawlNumber = depositWithdrawlNumber + depositAmount;
-            // adds the amount the user has inputed
-            numberConverter = Float.toString(depositWithdrawlNumber);
-            //converts the float back to the String
-            allLinesAllElements[d][4] = numberConverter;
-            // adds the new number to the recorded values 
-            System.out.print(". Now it is at "+allLinesAllElements[d][4]);
-        } else if (depositChoice.equals("2") || depositChoice.equals("TWO")){
-            System.out.println("what amount do you want to Withdrawl");
-            float withdrawlAmount = kb.nextFloat();
-            //Amount the users wants to add
-            System.out.print("Your account was at " +allLinesAllElements[d][4]);
-            //before the added values
-            depositWithdrawlNumber = depositWithdrawlNumber - withdrawlAmount;
-            // adds the amount the user has inputed
-            numberConverter = Float.toString(depositWithdrawlNumber);
-            //converts the float back to the String
-            allLinesAllElements[d][4] = numberConverter;
-            // adds the new number to the recorded values 
-            System.out.print(". Now it is at "+allLinesAllElements[d][4]);
-            
+        
+        while (allowDepositWithdrawl == true){
+            System.out.println("Type 1 to deposit and 2 to withdrawl");
+            String depositChoice = kb.nextLine().toUpperCase();
+            if (depositChoice.equals("1")|| depositChoice.equals("ONE")){
+                System.out.println("what amount do you want to deposit");
+
+                float depositAmount = kb.nextFloat();
+                kb.nextLine();
+                //Amount the users wants to add
+
+                System.out.print("Your "+allLinesAllElements[d][3]+" was at " +allLinesAllElements[d][4]);
+                //before the added values
+
+                depositWithdrawlNumber = depositWithdrawlNumber + depositAmount;
+                // adds the amount the user has inputed
+
+                numberConverter = Float.toString(depositWithdrawlNumber);
+                //converts the float back to the String
+
+                allLinesAllElements[d][4] = numberConverter;
+                // adds the new number to the recorded values 
+
+                System.out.print(". Now it is at "+allLinesAllElements[d][4]);
+                allowDepositWithdrawl = false;
+            } else if (depositChoice.equals("2") || depositChoice.equals("TWO")){
+                System.out.println("what amount do you want to Withdrawl");
+
+                float withdrawlAmount = kb.nextFloat();
+                kb.nextLine(); 
+                
+                //throws away character return
+                //Amount the users wants to add
+                
+                if (withdrawlAmount >= 5000){
+                    System.out.println('\u000C');
+                    System.out.println("Withdrawl amount is too much, try again");
+                    bankingTask.RunArt();
+                    DepositOrWithdrawl();
+                }
+
+                depositWithdrawlNumber = depositWithdrawlNumber - withdrawlAmount;
+                // adds the amount the user has inputed
+
+                numberConverter = Float.toString(depositWithdrawlNumber);
+                //converts the float back to the String
+                
+                System.out.print("Your "+allLinesAllElements[d][3]+" was at " +allLinesAllElements[d][4]);
+                //before the added values
+                
+        
+                allLinesAllElements[d][4] = numberConverter;
+                // adds the new number to the recorded values 
+
+                System.out.print(". Now it is at "+allLinesAllElements[d][4]);
+                allowDepositWithdrawl = false;
+
+            }
+        }
+        System.out.println();
+        System.out.println("Do you want to try and Depost/Withdrawl again?. TYPE yes to do so, otherwise type no to go back to the menu");
+        String menuChoiceFour = kb.nextLine().toUpperCase();
+        System.out.println("working");
+        //users input that chooses the choice
+        if (menuChoiceFour.equals("YES") || menuChoiceFour.equals("Y") || menuChoiceFour.equals("YEP")){
+            CheckBalance();
+            //runs the method again
+        } else if (menuChoiceFour.equals("NO") || menuChoiceFour.equals("N") || menuChoiceFour.equals("NAH")){
+            System.out.println('\u000C');
+            bankingTask.Menu();
+            // closes the program and returns to menu
+        }  else{ 
+            System.out.println('\u000C');
+            System.out.println("Input not recognised, going back to the menu");
+            bankingTask.Menu();
         }
     } 
 }

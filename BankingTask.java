@@ -14,6 +14,7 @@ public class BankingTask {
     
     public BankingTask() {
         this.doesTheStuff = new DoesTheStuff(this); // Pass 'this' to DoesTheStuff
+        Menu();
     }
     
     public void Menu() {
@@ -54,7 +55,9 @@ public class BankingTask {
                 break;
 
             default:
+                System.out.println('\u000C');
                 System.out.println("Input not identified. Please try again");
+                Menu();
         }
        
     }
