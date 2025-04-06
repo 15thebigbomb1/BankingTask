@@ -16,20 +16,20 @@ import java.io.BufferedReader;
 public class DoesTheStuff
 {
     private String name;
-    private int account;
+    private int accountNumber;
     private String address;
     private String accountType;
     private int balance;
     // all the private info of the users
+    
     private String[] values;
-
     int MAXLINES = 20;
-    final int VALUESPERLINE= 5;
+    
     private Scanner kb = new Scanner(System.in);
-    ArrayList<BankingTask> info = new ArrayList<BankingTask>();
     int linecount = 0;
     File userInfoList = new File("TestAccounts.csv");
     private String[][] allLinesAllElements;
+    
     private BankingTask bankingTask;
     // defining 2d arrays and loops for file checking, and also defing where the values will be
     // kept with the 2d array, "allLinesAllElements".
@@ -71,7 +71,22 @@ public class DoesTheStuff
     }
 
     public void CreateAccount(){
-        System.out.println("hello 1");
+        
+    String[] namesOfChoices = {"name","accountNumber","address","accountType","balance"};
+        for (int i = 0; i<4;i++){
+            System.out.println("what is your "+namesOfChoices[i]);
+            String ChoiceOne = kb.nextLine();
+            System.out.println("are you sure?");
+            String yesOrNoChoice = kb.nextLine().toUpperCase();
+            if (yesOrNoChoice.equals("YES") || yesOrNoChoice.equals("Y") || yesOrNoChoice.equals("YEP")){
+                this.namesOfChoices[i] = ChoiceOne;
+            }
+            
+        }
+        
+        
+        
+        
     }
 
     public void CloseAccount(){
@@ -112,6 +127,8 @@ public class DoesTheStuff
             writer.write(newContent);
         }
         catch (IOException e){}
+        
+        
         try
             {
                 //Closing the resources
