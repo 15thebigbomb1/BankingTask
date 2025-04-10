@@ -12,6 +12,7 @@
     import java.io.FileWriter;
     import java.io.IOException;
     import java.io.BufferedReader;
+    import java.util.Random;
     
     public class DoesTheStuff
     {
@@ -79,7 +80,7 @@
             String oldContent = "";
             //where all the old content goes.
             
-            for (int i = 0; i<4;i++){
+            for (int i = 0; i<2;i++){
                 System.out.println("what is your "+namesOfChoices[i]);
                 String ChoiceOne = kb.nextLine();
                 System.out.println("are you sure?");
@@ -92,7 +93,39 @@
                     System.out.println("Try again");
                     i = i -1;
                 }
+            }
+            
+            numberChoices[0] = "08-0101-0";
+            Random randNumber = new Random();
+            for (int b = 0; b<6;b++){
+                int number = randNumber.nextInt(10);
+                 Integer.toString(number);
+                 numberChoices[0] = numberChoices[0]+number;
+                System.out.println(numberChoices[0]);
+            }
+            numberChoices[0] = numberChoices[0] + "-00";
+            
+            System.out.println("Choose which account type you want by pressing the corrosponding");
+            System.out.println("number on your keyboard");
+            System.out.println("1: Everyday");
+            System.out.println("2: Savings");
+            System.out.println("3: Current");
+            boolean choiceTwoTrue = true;
+            while (choiceTwoTrue == true){
+                String choiceTwo = kb.nextLine().toUpperCase();
+                if (choiceTwo.equals("1")||choiceTwo.equals("ONE")){
+                    numberChoices[1] = "Everyday";
+                    choiceTwoTrue = false;
+                } else if (choiceTwo.equals("2")||choiceTwo.equals("TWO")){
+                    numberChoices[1] = "Savings"; 
+                    choiceTwoTrue = false;
+                } else if (choiceTwo.equals("3")||choiceTwo.equals("THREE")){
+                    numberChoices[1] = "current"; 
+                    choiceTwoTrue = false;
+                } else {
+                    System.out.println("Input not reconised try again");
                 
+                }
             }
             try {
                 Scanner reader = new Scanner(userInfoList);
@@ -106,6 +139,10 @@
                 for (String i : typingChoices){
                   writer.write(i+",");
                 }
+                for (String i : numberChoices){
+                  writer.write(i+",");
+                }
+                
                 writer.write("0");
                 
                 System.out.println("worked");
@@ -117,6 +154,26 @@
             
             
             
+            }
+            
+            System.out.println("Do you want to try and make a new Acoount again?. TYPE yes to do so, otherwise type no to go back to the menu");
+            
+            String menuChoiceOne = kb.nextLine().toUpperCase();
+            System.out.println("working");
+            //users input that chooses the choice
+            if (menuChoiceOne.equals("YES") || menuChoiceOne.equals("Y") || menuChoiceOne.equals("YEP")){
+                CreateAccount();
+                //runs the method again
+            } else if (menuChoiceOne.equals("NO") || menuChoiceOne.equals("N") || menuChoiceOne.equals("NAH")){
+                System.out.println('\u000C');
+                bankingTask.Menu();
+                
+                // closes the program and returns to menu
+            }  else{ 
+                System.out.println('\u000C');
+                System.out.println("Input not recognised, going back to the menu");
+                bankingTask.Menu();
+                ChangeVariable();
             }
         }
     
