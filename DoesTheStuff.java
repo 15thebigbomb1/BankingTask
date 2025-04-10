@@ -73,7 +73,7 @@
         public void CreateAccount(){
             String[] Choices = {this.name,this.accountNumber,this.address,this.accountType,this.balance};
             String[] namesOfChoices = {"name","accountNumber","address","accountType","balance"};
-            
+            String oldContent = "";
             
             for (int i = 0; i<4;i++){
                 System.out.println("what is your "+namesOfChoices[i]);
@@ -90,10 +90,24 @@
                 }
                 
             }
+            try {
+                Scanner reader = new Scanner(userInfoList);
+                while (reader.hasNextLine()){
+                    String line = reader.nextLine();
+                    oldContent = oldContent + line + System.lineSeparator();
+                    
+                    
+                }
+                
+                
+                
+            } catch (IOException er){ 
+                er.printStackTrace();
+                
             
             
             
-            
+            }
         }
     
         public void CloseAccount(){
