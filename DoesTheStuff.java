@@ -99,7 +99,7 @@ public class DoesTheStuff
             //defines the name
 
             System.out.println("are you sure?");
-            System.out.println("type yes/no");
+            System.out.println("type yes to confirm, no to retry, and menu to go back to the menu");
             String yesOrNoChoice = kb.nextLine().toUpperCase();
             //makes  sure user is alright with name choice
 
@@ -114,7 +114,13 @@ public class DoesTheStuff
                 //removes any spaces at the front of the name
                 System.out.println(typingChoices[i]);
                 // shows user improved name
-            } else {
+            } else if (yesOrNoChoice.equals("MENU") || (yesOrNoChoice.equals("M"))){
+                   System.out.println('\u000C');
+                   
+                   bankingTask.Menu();
+                   return;
+                   
+            }else {
                 System.out.println("Input was no, or not identifed");
                 System.out.println("Try again");
                 i = i -1;
@@ -584,7 +590,7 @@ public class DoesTheStuff
         //goes through the balances in all accounts and adds them up into total cash
             
         System.out.println();
-        System.out.println("the Total amount of cash in the bank"+totalCash+".");
+        System.out.println("the Total amount of cash in the bank "+totalCash+".");
         //shows the total cash to the user
         
         String[] totalStringChoice = {Float.toString(depositTotalAmount),Float.toString(withdrawlTotalAmount),Float.toString(totalCash)};
@@ -604,6 +610,7 @@ public class DoesTheStuff
             FileWriter writerAccount = new FileWriter(totalCashInfo);
             //writes to a new csv file
             writerAccount.write(oldContent);
+            writerAccount.write("\n");
             writerAccount.write("The Total amount of Deposits For "+date+" is "+totalStringChoice[0]+"\n");
             writerAccount.write("The Total amount of withdrawls For "+date+" is "+totalStringChoice[1]+"\n");
             writerAccount.write("The Total amount of cash in the bank for "+date+" is "+totalStringChoice[2]+"\n");
