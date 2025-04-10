@@ -97,12 +97,16 @@ public class DoesTheStuff
             System.out.println("what is your "+namesOfChoices[i]);
             String ChoiceOne = kb.nextLine();
             //defines the name
-
+            if (ChoiceOne.equals("")){
+                System.out.println("Try Again!");
+                CreateAccount();
+            }
+            
             System.out.println("are you sure?");
             System.out.println("type yes to confirm, no to retry, and menu to go back to the menu");
             String yesOrNoChoice = kb.nextLine().toUpperCase();
             //makes  sure user is alright with name choice
-
+            
             if (yesOrNoChoice.equals("YES") || yesOrNoChoice.equals("Y") || yesOrNoChoice.equals("YEP")){
                 typingChoices[i] = ChoiceOne.replace(","," ");
                 // replaces any commas with spaces
@@ -470,9 +474,18 @@ public class DoesTheStuff
             String depositChoice = kb.nextLine().toUpperCase();
             if (depositChoice.equals("1")|| depositChoice.equals("ONE")){
                 System.out.println("what amount do you want to deposit");
-
-                float depositAmount = kb.nextFloat();
+    
+                String stringTempDepositAmount = kb.nextLine();
+                try {
+                    Integer.parseInt(stringTempDepositAmount);
+                    System.out.println("string is number");
+                } catch (NumberFormatException e) {
+                    System.out.println("Try again");
+                    DepositOrWithdrawl();
+                }
                 kb.nextLine();
+                Float depositAmount = Float.valueOf(stringTempDepositAmount);
+                
                 //Amount the users wants to add
 
                 System.out.print("Your "+allLinesAllElements[d][3]+" account was at " +allLinesAllElements[d][4]);
@@ -498,9 +511,18 @@ public class DoesTheStuff
             } else if (depositChoice.equals("2") || depositChoice.equals("TWO")){
                 System.out.println("what amount do you want to Withdrawl");
 
-                float withdrawlAmount = kb.nextFloat();
+                String stringTempWithdrawlAmount = kb.nextLine();
                 kb.nextLine(); 
-
+                try {
+                    Integer.parseInt(stringTempWithdrawlAmount);
+                    System.out.println("string is number");
+                } catch (NumberFormatException e) {
+                    System.out.println("Try again");
+                    DepositOrWithdrawl();
+                }
+                //checks uf tge strings are numbers or not if not it will-
+                //reset the method in the catch statement.
+                Float withdrawlAmount = Float.valueOf(stringTempWithdrawlAmount);
                 //throws away character return
                 //Amount the users wants to add
 
