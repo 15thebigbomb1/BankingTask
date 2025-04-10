@@ -30,6 +30,8 @@ public class BankingTask {
         System.out.println("|||| 3: CHECK BALANCE ||||");
         System.out.println();
         System.out.println("|||| 4: DEPOSIT/WITHDRAW ||||");
+        System.out.println();
+        System.out.println("|||| 5: EXIT ||||");
 
         String choose = kb.nextLine().toUpperCase();
          doesTheStuff.DefineFiles();
@@ -53,6 +55,22 @@ public class BankingTask {
             case "4":
                 doesTheStuff.DepositOrWithdrawl();
                 break;
+            case "FIVE":
+            case "5":
+                System.out.println("are you sure?");
+                System.out.println("Type yes or no");
+                String exitChoice = kb.nextLine().toUpperCase();
+                if (exitChoice.equals("YES") ||exitChoice.equals("Y") || exitChoice.equals("YEP")){
+                     System.exit(0);
+                } else if (exitChoice.equals("NO")||exitChoice.equals("N")||exitChoice.equals("NAH")){
+                    System.out.println('\u000C');
+                    Menu();
+                } else{
+                    System.out.println('\u000C');
+                    System.out.println("Try again");
+                    Menu();
+                }
+                
 
             default:
                 System.out.println('\u000C');

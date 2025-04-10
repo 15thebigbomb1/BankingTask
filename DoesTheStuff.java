@@ -36,6 +36,7 @@
         
         String replaceValue;
         String newValue;
+        String replaceName;
         public DoesTheStuff(BankingTask bankingTask) { 
             this.bankingTask = bankingTask; // Assign BankingTask instance
         }
@@ -134,20 +135,20 @@
                     System.out.println(line);
                     oldContent = oldContent + line + System.lineSeparator();
                 }
-                FileWriter writer = new FileWriter(userInfoList);
-                writer.write(oldContent);
+                FileWriter writerAccount = new FileWriter(userInfoList);
+                writerAccount.write(oldContent);
                 for (String i : typingChoices){
-                  writer.write(i+",");
+                  writerAccount.write(i+",");
                 }
                 for (String i : numberChoices){
-                  writer.write(i+",");
+                  writerAccount.write(i+",");
                 }
                 
-                writer.write("0");
+                writerAccount.write("0");
                 
                 System.out.println("worked");
-                writer.flush();
-                writer.close();
+                writerAccount.flush();
+                writerAccount.close();
             } catch (IOException er){ 
                 er.printStackTrace();
                 
@@ -184,7 +185,7 @@
         public void ChangeVariable(){
             String oldContent = "";
             BufferedReader reader = null;
-             
+            int lineCountTwo = 0;
             FileWriter writer = null;
              try
             {
@@ -198,21 +199,41 @@
                 {
                     
                     oldContent = oldContent + line + System.lineSeparator();
-                     
+                    
                     line = reader.readLine();
+                    
                     // System.out.println(line);
                 }
                  
                 //Replacing oldString with newString in the oldContent
                 // System.out.println(replaceValue);
                 // System.out.println(newValue);
-                String newContent = oldContent.replace(","+replaceValue, ","+newValue);
-                 
+                String[] lines = oldContent.split(System.lineSeparator());
+                // splits the oldcontent into lines which include name accountNumber etc
+                  for (int i = 0; i < lines.length; i++) {
+                    String[] elements = lines[i].split(",");
+                    //splits the line into all the elements of the line.
+                    
+                    if (elements[0].equals(replaceName)) {
+                        elements[4] = newValue;  //
+                        System.out.println(elements[0]);
+                        System.out.println(elements[4]);
+                        //replaces the foruth value (balance) with the newValue assigned in
+                        // The deposit/withdrawl class,
+                        lines[i] = String.join(",", elements);
+                        // joins the elements back into lines
+                    }
+                    // goes through each element
+                }  
+                //for loop goes through each line
+                String newContent = String.join(System.lineSeparator(), lines);
+                 // adds the lines into the newContent string 
                 //Rewriting the input text file with newContent
                  
                 writer = new FileWriter(userInfoList);
-                 
+                 //defines the fileWriter
                 writer.write(newContent);
+                //writes new content back to the file
             }
             catch (IOException e){}
             
@@ -316,9 +337,14 @@
     
                     System.out.print("Your "+allLinesAllElements[d][3]+" was at " +allLinesAllElements[d][4]);
                     //before the added values
-                    replaceValue = Float.toString(depositWithdrawlNumber);
+                    replaceName = allLinesAllElements[d][0].replaceAll("\\.$", "").trim();
+                    
+                    
+                    
+                    
                     depositWithdrawlNumber = depositWithdrawlNumber + depositAmount;
-                    newValue = Float.toString(depositWithdrawlNumber);
+                    newValue = String.valueOf(Math.round(depositWithdrawlNumber));
+                    ChangeVariable();
                     
                     // adds the amount the user has inputed
     
@@ -329,7 +355,7 @@
                     // adds the new number to the recorded values 
     
                     System.out.print(". Now it is at "+allLinesAllElements[d][4]);
-                    ChangeVariable();
+                    
                     allowDepositWithdrawl = false;
                 } else if (depositChoice.equals("2") || depositChoice.equals("TWO")){
                     System.out.println("what amount do you want to Withdrawl");
@@ -347,10 +373,12 @@
                         DepositOrWithdrawl();
                     }
                     
-                    replaceValue = Float.toString(depositWithdrawlNumber);
+                    String replaceName = allLinesAllElements[d][0].replaceAll("\\.$", "").trim();
                     depositWithdrawlNumber = depositWithdrawlNumber - withdrawlAmount;
                     // adds the amount the user has inputed
-                    newValue = Float.toString(depositWithdrawlNumber);
+                    newValue = String.valueOf(Math.round(depositWithdrawlNumber));
+                    ChangeVariable();
+                    System.out.println(newValue);
                     numberConverter = Float.toString(depositWithdrawlNumber);
                     //converts the float back to the String
                     
@@ -362,12 +390,13 @@
                     // adds the new number to the recorded values 
     
                     System.out.print(". Now it is at "+allLinesAllElements[d][4]);
-                    ChangeVariable();
+                    
                     allowDepositWithdrawl = false;
                     
                 }
             }
             System.out.println();
+               
            
             System.out.println("Do you want to try and Depost/Withdrawl again?. TYPE yes to do so, otherwise type no to go back to the menu");
             
@@ -386,7 +415,6 @@
                 System.out.println('\u000C');
                 System.out.println("Input not recognised, going back to the menu");
                 bankingTask.Menu();
-                ChangeVariable();
             }
         } 
     }
