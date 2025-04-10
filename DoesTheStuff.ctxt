@@ -14,4 +14,6 @@ comment6.params=
 comment6.target=void\ CheckBalance()
 comment7.params=
 comment7.target=void\ DepositOrWithdrawl()
-numComments=8
+comment8.params=
+comment8.target=void\ Exit()
+numComments=9

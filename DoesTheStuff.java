@@ -30,7 +30,8 @@ public class DoesTheStuff
     int lineCount;
     // defining lineCount
     File userInfoList = new File("TestAccounts.csv");
-    // defining the file as a variable
+    // defining the Account file as a variable
+    File totalCashInfo = new File("TotalMoneyDetails.csv");
     private String[][] allLinesAllElements;
 
     private BankingTask bankingTask;
@@ -41,6 +42,10 @@ public class DoesTheStuff
     String replaceName;
     String replaceAccountNumber;
     //for replacing values in file or checking that what I am replacing is in the correct place
+
+    float withdrawlTotalAmount = 0;
+    float depositTotalAmount  = 0;
+    float totalCash = 0;
     public DoesTheStuff(BankingTask bankingTask) { 
         this.bankingTask = bankingTask; // Assign BankingTask instance
     }
@@ -71,7 +76,6 @@ public class DoesTheStuff
             allLinesAllElements = tempList.toArray(new String[tempList.size()][]);
             //defines the templists values and adds it to the 2d array, with the first
             // variable being the amount of rows, and the second being the info name, adress etc.
-
         } catch (IOException e) {System.out.println(e);}
         //Catches error
     }
@@ -81,29 +85,31 @@ public class DoesTheStuff
         String[] numberChoices = { this.accountNumber,this.accountType};
         //holds the private Strings in an one for a loop for when the user is inputing with keyboard
         // and the other for when the user is chooisng from multiple options 
-        
+
         String[] namesOfChoices = {"name","address","accountNumber","accountType",};
         // used for the for loop to show the user what they are writing for.
-        
+
         String oldContent = "";
         //where all the old content goes.
+        System.out.println("Create a new account,with new details, or the same deatils but a diffrent account type");
 
         for (int i = 0; i<2;i++){
             System.out.println("what is your "+namesOfChoices[i]);
             String ChoiceOne = kb.nextLine();
             //defines the name
-            
+
             System.out.println("are you sure?");
+            System.out.println("type yes/no");
             String yesOrNoChoice = kb.nextLine().toUpperCase();
             //makes  sure user is alright with name choice
-            
+
             if (yesOrNoChoice.equals("YES") || yesOrNoChoice.equals("Y") || yesOrNoChoice.equals("YEP")){
                 typingChoices[i] = ChoiceOne.replace(","," ");
                 // replaces any commas with spaces
-                
+
                 typingChoices[i] = typingChoices[i].replaceAll("\\s+", " "); 
                 // replace any double spaces with a normal space
-                
+
                 typingChoices[i] = typingChoices[i].trim(); 
                 //removes any spaces at the front of the name
                 System.out.println(typingChoices[i]);
@@ -119,7 +125,7 @@ public class DoesTheStuff
 
         numberChoices[0] = "08-0101-0";
         //defines the first seven digits as most accounts made all have the same numbers at the start
-        
+
         Random randNumber = new Random();
         for (int b = 0; b<6;b++){
             int number = randNumber.nextInt(10);
@@ -129,10 +135,10 @@ public class DoesTheStuff
         }
         // runs a for loop that generates 6 random numbers to add to the unique account number for the-
         // account
-        
+
         numberChoices[0] = numberChoices[0] + "-00";
         // adds the last two digits that are added to all numbers made in create account
-        
+
         System.out.println("Choose which account type you want by pressing the corrosponding");
         System.out.println("number on your keyboard");
         System.out.println("1: Everyday");
@@ -157,7 +163,7 @@ public class DoesTheStuff
             }
         }
         //runs a while loop that will run again if the user has not chosen one of the three choices
-        
+
         try {
             Scanner reader = new Scanner(userInfoList);
             //read the csv file
@@ -167,22 +173,22 @@ public class DoesTheStuff
                 oldContent = oldContent + line + System.lineSeparator();
             }
             //reads all the lines in the and add it to the oldContent variable
-            
+
             FileWriter writerAccount = new FileWriter(userInfoList);
             //defines the writer for the file
-            
+
             writerAccount.write(oldContent);
             //writes all old content first before writing the new content
             for (String i : typingChoices){
                 writerAccount.write(i+",");
             }
             //runs a for each loop to write the first two users choice in the first array
-            
+
             for (String i : numberChoices){
                 writerAccount.write(i+",");
             }
             //runs a for each loop to write for the last two user choices in the second array
-            
+
             String startBalance = "0";
             writerAccount.write(startBalance);
             // As all new accounts start with a balance of 0, this is just writing for the balance-
@@ -196,18 +202,18 @@ public class DoesTheStuff
             er.printStackTrace();
             //catches error
         }
-        
+
         System.out.println("YOUR ACCOUNT NUMBER IS:");
         System.out.println(numberChoices[0]);
         System.out.println("PLEASE WRITE THIS DOWN AS YOU WILL NEED IT FOR ALL ACTIONS LIKE BALANCE, DEPOSIT, ETC.");
         System.out.println();
         //Printed text to try show the user the importance of their unique account number-
         //and to get them to write it down as they will need it to access all servises in the program.
-        
+
         System.out.println("Do you want to try and make a new Acoount again?. TYPE yes to do so, otherwise type no to go back to the menu");
         String menuChoiceOne = kb.nextLine().toUpperCase();
-        System.out.println("working");
         //users input that chooses the choice
+
         if (menuChoiceOne.equals("YES") || menuChoiceOne.equals("Y") || menuChoiceOne.equals("YEP")){
             CreateAccount();
             //runs the method again
@@ -222,7 +228,7 @@ public class DoesTheStuff
             //if the input is not identifed it will just revert to going back to the menu.
         }
         //if statement used in all methods to give the user to redo the action and go back to the menu.
-        
+
     }
 
     public void CloseAccount(){
@@ -235,7 +241,7 @@ public class DoesTheStuff
         String accountNumberRemoval = kb.nextLine();
         System.out.println(accountNumberRemoval);
         //extra security step to making sure only the user of the account can do this.
-        
+
         try {
             Scanner reader = new Scanner(userInfoList);
             while (reader.hasNextLine()){
@@ -244,7 +250,7 @@ public class DoesTheStuff
                 oldContent = oldContent + line + System.lineSeparator();
                 //reads the input and puts it all in the variable oldContent.
             }
-            
+
             String[] lines = oldContent.split(System.lineSeparator());
             //puts the old content into an array holding each line
             ArrayList<String> updatedLines = new ArrayList<>();
@@ -256,7 +262,7 @@ public class DoesTheStuff
                 if (!elements[0].equals(chooseAccountRemoval) && !elements[2].equals(accountNumberRemoval)) {
                     updatedLines.add(lines[i]);
                     //adds the wanted lines to the array
-                    
+
                 } else  {
                     System.out.println("For security Reasons what is the address you have put for your account");
                     String password = kb.nextLine();
@@ -323,7 +329,6 @@ public class DoesTheStuff
                 // System.out.println(line);
             }
 
-           
             // System.out.println(replaceValue);
             // System.out.println(newValue);
             String[] lines = oldContent.split(System.lineSeparator());
@@ -343,7 +348,7 @@ public class DoesTheStuff
                 // goes through each element of the line.
             }  
             //for loop goes through each line
-            
+
             String newContent = String.join(System.lineSeparator(), lines);
             // adds the lines into the newContent string 
             //Rewriting the input text file with newContent
@@ -373,7 +378,7 @@ public class DoesTheStuff
     public void CheckBalance(){
         int b = 0;
         // int value for the while loop that checks for the correct name and accountnumber
-        
+
         System.out.println("enter in your name to check your balance");
 
         String balanceName = kb.nextLine();
@@ -415,7 +420,7 @@ public class DoesTheStuff
             bankingTask.Menu();
         }
         //if statement used in all methods to give the user to redo the action and go back to the menu.
-        
+
     }
 
     public void DepositOrWithdrawl(){
@@ -423,10 +428,10 @@ public class DoesTheStuff
         // int value for the while loop that checks for the name 
         System.out.println("enter in your name of the account you want to use");
         String depositname = kb.nextLine();
-        
+
         System.out.println("Enter in your account number");
         String depositAccountNumber = kb.nextLine();
-        
+
         boolean depositNameCheck = true;
         //runs nameCheck loop
         boolean allowDepositWithdrawl = false;
@@ -466,11 +471,12 @@ public class DoesTheStuff
 
                 System.out.print("Your "+allLinesAllElements[d][3]+" account was at " +allLinesAllElements[d][4]);
                 //before the added values
-                
 
                 depositWithdrawlNumber = depositWithdrawlNumber + depositAmount;
                 newValue = String.valueOf(depositWithdrawlNumber);
+                depositTotalAmount = depositTotalAmount + depositAmount;
                 ChangeVariable();
+
 
                 // adds the amount the user has inputed
 
@@ -499,11 +505,29 @@ public class DoesTheStuff
                     DepositOrWithdrawl();
                 }
                 //checks if the withdrawl amount is too much.
-                
+
                 String replaceName = allLinesAllElements[d][0];
                 depositWithdrawlNumber = depositWithdrawlNumber - withdrawlAmount;
                 // adds the amount the user has inputed
+
+                if (allLinesAllElements[d][3].equals("Savings") || allLinesAllElements[d][3].equals("Everyday")){
+                    if (depositWithdrawlNumber <= 0){
+                        System.out.println("Your account is at or under zero, and you can no longer withdrawl");
+                        System.out.println("till you deposit more money");
+                        DepositOrWithdrawl();
+                    }
+                } 
+
+                if (allLinesAllElements[d][3].equals("Current")){
+                    if (depositWithdrawlNumber <= -1000){
+                        System.out.println("Your account is at or under -1000 dollars, and you can no longer withdrawl");
+                        System.out.println("till you deposit more money");
+                        DepositOrWithdrawl();
+                    }
+                }
                 newValue = String.valueOf(depositWithdrawlNumber);
+                withdrawlTotalAmount = withdrawlTotalAmount + withdrawlAmount;
+
                 ChangeVariable();
 
                 numberConverter = String.valueOf(depositWithdrawlNumber);
@@ -525,7 +549,7 @@ public class DoesTheStuff
 
         System.out.println("Do you want to try and Depost/Withdrawl again?. TYPE yes to do so, otherwise type no to go back to the menu");
         String menuChoiceFour = kb.nextLine().toUpperCase();
-        System.out.println("working");
+
         //users input that chooses the choice
         if (menuChoiceFour.equals("YES") || menuChoiceFour.equals("Y") || menuChoiceFour.equals("YEP")){
             DepositOrWithdrawl();
@@ -533,7 +557,7 @@ public class DoesTheStuff
         } else if (menuChoiceFour.equals("NO") || menuChoiceFour.equals("N") || menuChoiceFour.equals("NAH")){
             System.out.println('\u000C');
             bankingTask.Menu();
-            
+
             // closes the program and returns to menu
         }  else{ 
             System.out.println('\u000C');
@@ -543,4 +567,56 @@ public class DoesTheStuff
         }
         //if statement used in all methods to give the user to redo the action and go back to the menu.
     } 
+
+    public void Exit(){
+        String oldContent = "";
+        System.out.println("Type in the date, e.g (15/06/25)");
+        String date = kb.nextLine();
+        //You put in the date so you know on what day how much was deposited/withdrawled
+        
+        System.out.println("The Total amount of Deposits For the day is "+depositTotalAmount+".");
+        System.out.println();
+        System.out.println("The Total Amount of withdrawls for the day is "+withdrawlTotalAmount+".");
+        //tells the user the total Information
+        for (int i=0; i<allLinesAllElements.length;i++){
+                totalCash = totalCash + Float.parseFloat(allLinesAllElements[i][4]);
+            }
+        //goes through the balances in all accounts and adds them up into total cash
+            
+        System.out.println();
+        System.out.println("the Total amount of cash in the bank"+totalCash+".");
+        //shows the total cash to the user
+        
+        String[] totalStringChoice = {Float.toString(depositTotalAmount),Float.toString(withdrawlTotalAmount),Float.toString(totalCash)};
+        //turns all the float values into strings
+        
+        try {
+            Scanner reader = new Scanner(totalCashInfo);
+            //file reader for a new csv file
+            //read the csv file
+            while (reader.hasNextLine()){
+                String line = reader.nextLine();
+                // System.out.println(line);
+                oldContent = oldContent + line + System.lineSeparator();
+            }
+            //reads all the lines in  and add it to the oldContent variable
+
+            FileWriter writerAccount = new FileWriter(totalCashInfo);
+            //writes to a new csv file
+            writerAccount.write(oldContent);
+            writerAccount.write("The Total amount of Deposits For "+date+" is "+totalStringChoice[0]+"\n");
+            writerAccount.write("The Total amount of withdrawls For "+date+" is "+totalStringChoice[1]+"\n");
+            writerAccount.write("The Total amount of cash in the bank for "+date+" is "+totalStringChoice[2]+"\n");
+            //writes for total depoist, total withdrawl, and total cash.
+
+            // System.out.println("worked");
+            writerAccount.flush();
+            writerAccount.close();
+            //closes writer
+        } catch (IOException er){ 
+            er.printStackTrace();
+            //catches error
+        }
+
+    }
 }

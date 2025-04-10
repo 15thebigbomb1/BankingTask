@@ -61,7 +61,7 @@ public class BankingTask {
                 System.out.println("Type yes or no");
                 String exitChoice = kb.nextLine().toUpperCase();
                 if (exitChoice.equals("YES") ||exitChoice.equals("Y") || exitChoice.equals("YEP")){
-                     
+                     doesTheStuff.Exit();
                 } else if (exitChoice.equals("NO")||exitChoice.equals("N")||exitChoice.equals("NAH")){
                     System.out.println('\u000C');
                     Menu();
@@ -70,6 +70,7 @@ public class BankingTask {
                     System.out.println("Try again");
                     Menu();
                 }
+                break;
                 
 
             default:
