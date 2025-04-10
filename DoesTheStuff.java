@@ -19,7 +19,6 @@
         private String accountNumber;
         private String address;
         private String accountType;
-        private String balance;
         // all the private info of the users
         
         private String[] values;
@@ -68,12 +67,17 @@
                 // variable being the amount of rows, and the second being the info name, adress etc.
     
             } catch (IOException e) {System.out.println(e);}
+            //Catches error
         }
     
         public void CreateAccount(){
-            String[] Choices = {this.name,this.accountNumber,this.address,this.accountType,this.balance};
-            String[] namesOfChoices = {"name","accountNumber","address","accountType","balance"};
+            String[] typingChoices = {this.name,this.address};
+            String[] numberChoices = { this.accountNumber,this.accountType};
+            //holds the private Strings in an array
+            String[] namesOfChoices = {"name","address","accountNumber","accountType",};
+            // used for the for loop to show the user what they are writing for
             String oldContent = "";
+            //where all the old content goes.
             
             for (int i = 0; i<4;i++){
                 System.out.println("what is your "+namesOfChoices[i]);
@@ -81,8 +85,8 @@
                 System.out.println("are you sure?");
                 String yesOrNoChoice = kb.nextLine().toUpperCase();
                 if (yesOrNoChoice.equals("YES") || yesOrNoChoice.equals("Y") || yesOrNoChoice.equals("YEP")){
-                    Choices[i] = ChoiceOne;
-                    System.out.println(Choices[i]);
+                    typingChoices[i] = ChoiceOne;
+                    System.out.println(typingChoices[i]);
                 } else {
                     System.out.println("Input was no, or not identifed");
                     System.out.println("Try again");
@@ -94,13 +98,19 @@
                 Scanner reader = new Scanner(userInfoList);
                 while (reader.hasNextLine()){
                     String line = reader.nextLine();
+                    System.out.println(line);
                     oldContent = oldContent + line + System.lineSeparator();
-                    
-                    
                 }
+                FileWriter writer = new FileWriter(userInfoList);
+                writer.write(oldContent);
+                for (String i : typingChoices){
+                  writer.write(i+",");
+                }
+                writer.write("0");
                 
-                
-                
+                System.out.println("worked");
+                writer.flush();
+                writer.close();
             } catch (IOException er){ 
                 er.printStackTrace();
                 
@@ -148,7 +158,6 @@
                 writer.write(newContent);
             }
             catch (IOException e){}
-            
             
             try
                 {
