@@ -31,7 +31,7 @@ public class BankingTask {
         System.out.println();
         System.out.println("|||| 4: DEPOSIT/WITHDRAW ||||");
         System.out.println();
-        System.out.println("|||| 5: EXIT ||||");
+        System.out.println("|||| 5: EXIT (shows info on the banks total cash when exited) ||||");
 
         String choose = kb.nextLine().toUpperCase();
          doesTheStuff.DefineFiles();
@@ -61,7 +61,7 @@ public class BankingTask {
                 System.out.println("Type yes or no");
                 String exitChoice = kb.nextLine().toUpperCase();
                 if (exitChoice.equals("YES") ||exitChoice.equals("Y") || exitChoice.equals("YEP")){
-                     System.exit(0);
+                     
                 } else if (exitChoice.equals("NO")||exitChoice.equals("N")||exitChoice.equals("NAH")){
                     System.out.println('\u000C');
                     Menu();
